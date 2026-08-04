@@ -1,14 +1,9 @@
 
-
-
-
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import dns from "node:dns";
-
-
 
 import connectDB from "./utils/db.js";
 
@@ -17,12 +12,7 @@ import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
 
-// Force Google DNS
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
-
-
-
-
 
 dotenv.config();
 
@@ -30,10 +20,14 @@ const app = express();
 
 const PORT = process.env.PORT || 8000;
 
-app.use(cors({
-  origin: "https://jobprotal-application-frontend.onrender.com",
+// ✅ CORS Options
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://jobprotal-application-frontend.onrender.com",
+  ],
   credentials: true,
-}));
+};
 
 // Middlewares
 app.use(cors(corsOptions));
