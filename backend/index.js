@@ -30,10 +30,10 @@ const app = express();
 
 const PORT = process.env.PORT || 8000;
 
-const corsOptions = {
-  origin: "http://localhost:5173",
+app.use(cors({
+  origin: "https://jobprotal-application-frontend.onrender.com",
   credentials: true,
-};
+}));
 
 // Middlewares
 app.use(cors(corsOptions));
