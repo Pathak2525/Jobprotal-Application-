@@ -5,6 +5,10 @@ This platform allows students to search and apply for jobs, while recruiters can
 and manage applicants through an interactive dashboard.
 
 ---
+## Live Demo
+Frontend: https://jobprotal-application-frontend.onrender.com
+ Backend API: jobprotal-application-backend.onrender.com
+
 
 ## 🚀 Features
 
