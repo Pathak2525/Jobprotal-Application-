@@ -23,13 +23,11 @@
 //     }
 // }
 // export default isAuthenticated;
+import jwt from "jsonwebtoken";
 
 const isAuthenticated = async (req, res, next) => {
     try {
-        console.log("Cookies:", req.cookies);
-
         const token = req.cookies.token;
-        console.log("Token:", token);
 
         if (!token) {
             return res.status(401).json({
@@ -39,7 +37,6 @@ const isAuthenticated = async (req, res, next) => {
         }
 
         const decode = jwt.verify(token, process.env.SECRET_KEY);
-        console.log("Decoded:", decode);
 
         req.id = decode.userId;
         next();
@@ -52,3 +49,5 @@ const isAuthenticated = async (req, res, next) => {
         });
     }
 };
+
+export default isAuthenticated;
