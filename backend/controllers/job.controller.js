@@ -16,13 +16,13 @@ export const postJob = async (req, res) => {
             title,
             description,
             requirements: requirements.split(","),
-            salary: Number(salary),
-            location,
-            jobType,
-            experienceLevel: experience,
-            position,
-            company: companyId,
-            created_by: userId
+           salary: Number(salary),
+           location,
+           jobType,
+          experienceLevel: Number(experience),
+          position: Number(position),
+          company: companyId,
+          created_by: userId
         });
         return res.status(201).json({
             message: "New job created successfully.",
@@ -82,9 +82,9 @@ export const getJobById = async (req, res) => {
 export const getAdminJobs = async (req, res) => {
     try {
         const adminId = req.id;
-        const jobs = await Job.find({ created_by: adminId }).populate({
-            path:'company',
-            createdAt:-1
+       const jobs = await Job.find({ created_by: adminId })
+         .populate("company")
+          .sort({ createdAt: -1 });
         });
         if (!jobs) {
             return res.status(404).json({
