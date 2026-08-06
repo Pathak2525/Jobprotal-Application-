@@ -34,30 +34,51 @@ const PostJob = () => {
     };
 
     const selectChangeHandler = (value) => {
-        const selectedCompany = companies.find((company)=> company.name.toLowerCase() === value);
-        setInput({...input, companyId:selectedCompany._id});
-    };
+    const selectedCompany = companies.find(
+        (company) => company.name.toLowerCase() === value
+    );
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        try {
-            setLoading(true);
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, input,{
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                withCredentials:true
-            });
-            if(res.data.success){
-                toast.success(res.data.message);
-                navigate("/admin/jobs");
-            }
-        } catch (error) {
-            toast.error(error.response.data.message);
-        } finally{
-            setLoading(false);
-        }
+    if (selectedCompany) {
+        setInput((prev) => ({
+            ...prev,
+            companyId: selectedCompany._id,
+        }));
     }
+  };
+ const submitHandler = async (e) => {
+    e.preventDefault();
+
+    if (!input.companyId) {
+        return toast.error("Please select company");
+    }
+
+    console.log(input); // Debug
+
+    try {
+        setLoading(true);
+
+        const res = await axios.post(
+            `${JOB_API_END_POINT}/post`,
+            input,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true,
+            }
+        );
+
+        if (res.data.success) {
+            toast.success(res.data.message);
+            navigate("/admin/jobs");
+        }
+    } catch (error) {
+        console.log(error.response?.data);
+        toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div>
@@ -156,7 +177,10 @@ const PostJob = () => {
                                             {
                                                 companies.map((company) => {
                                                     return (
-                                                        <SelectItem value={company?.name?.toLowerCase()}>{company.name}</SelectItem>
+                                                        <SelectItem
+                                                                 key={company._id}
+                                                                 value={company.name.toLowerCase()}> {company.name}
+                                                        </SelectItem>
                                                     )
                                                 })
                                             }
